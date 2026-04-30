@@ -15,8 +15,8 @@ class Service {
         return 'Hello from Service Message' . $this->helper->getHelperMessage();
     }
 
-    public function getMessage2()
-    {
-        return 'Service Message 2';
-    }
+    // public function getMessage2()
+    // {
+    //     return 'Service Message 2';
+    // }
 }
