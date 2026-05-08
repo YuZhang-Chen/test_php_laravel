@@ -1,5 +1,7 @@
 <?php
 
+use App\Contracts\DowntimeNotifier;
+use App\Contracts\ServerProvider;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProfileController;
 use App\Service\Service;
@@ -8,6 +10,8 @@ use App\Service\Transistor;
 use App\Service\Helper;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use App\Service\Riak\Connection;
+use App\Service\Riak\UserLogger;
 
 Route::get('/service-test', function () {
     // Test Singleton (Transistor)
@@ -77,5 +81,33 @@ Route::get('/check', function () {
 Route::get('/notify', function (Notification $notification) {
     return $notification->send("Laravel is awesome!");
 });
+
+Route::get('/test_riak', function (Connection $riak) {
+    return $riak->connect();
+});
+
+Route::get('/test_user_log_1', function () {
+    $logger = app('user_logger_1');
+    return $logger->logUser('User One', 'user1@example.com');
+});
+
+Route::get('/test_user_log_2', function () {
+    $logger = app('user_logger_2');
+    return $logger->logUser('User Two', 'user2@example.com');
+});
+
+Route::get('/test_user_log_3', function () {
+    $logger = app('user_logger_3');
+    return $logger->logUser('User Three', 'user3@example.com');
+});
+
+Route::get('test-server', function (ServerProvider $serverProvider) {
+    return $serverProvider->createServer('testServer');
+});
+
+Route::get('/test-notifier', function (DowntimeNotifier $downtimeNotifier) {
+    return $downtimeNotifier->notify('Server is down');
+});
+
 
 require __DIR__.'/auth.php';
